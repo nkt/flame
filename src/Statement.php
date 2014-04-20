@@ -24,6 +24,19 @@ class Statement extends \PDOStatement
     }
 
     /**
+     * @return static
+     * @throws Exception
+     */
+    public function closeCursor()
+    {
+        if (!parent::closeCursor()) {
+            throw new Exception();
+        }
+
+        return $this;
+    }
+
+    /**
      * @param callable $callback
      * @param int      $mode
      *
