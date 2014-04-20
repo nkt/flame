@@ -9,6 +9,21 @@ namespace Flame;
 class Statement extends \PDOStatement
 {
     /**
+     * @var array
+     */
+    private $placeholders;
+    /**
+     * @var array
+     */
+    private $types;
+
+    private function __construct(&$placeholders, &$types)
+    {
+        $this->placeholders = $placeholders;
+        $this->types = $types;
+    }
+
+    /**
      * @param array $parameters
      *
      * @return static
@@ -16,7 +31,22 @@ class Statement extends \PDOStatement
      */
     public function execute($parameters = null)
     {
-        if (!parent::execute($parameters)) {
+        if ($parameters !== null) {
+            $parameters = array_intersect_key($parameters, $this->types);
+            foreach ($this->placeholders as $i => $name) {
+                $value = & $parameters[$name];
+                if ($value === null) {
+                    $this->bindValue($i + 1, null, \PDO::PARAM_NULL);
+                } else {
+                    $type = & $this->types[$name];
+                    if ($type === \PDO::PARAM_INT) {
+                        $value = (int)$value;
+                    }
+                    $this->bindValue($i + 1, $value, $type);
+                }
+            }
+        }
+        if (!parent::execute()) {
             throw new Exception();
         }
 

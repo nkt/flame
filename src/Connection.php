@@ -8,14 +8,25 @@ namespace Flame;
  */
 class Connection extends \PDO
 {
+    const PLACEHOLDER_REGEX = '~([sbnilf]{0,1}):(\w+)~';
     protected static $typeMap = [
+        's' => \PDO::PARAM_STR,
+        ''  => \PDO::PARAM_STR, // string by default
         'b' => \PDO::PARAM_BOOL,
         'n' => \PDO::PARAM_NULL,
         'i' => \PDO::PARAM_INT,
-        's' => \PDO::PARAM_STR,
         'l' => \PDO::PARAM_LOB,
         'f' => \PDO::PARAM_STR
     ];
+
+    /**
+     * @var array
+     */
+    private $placeholders;
+    /**
+     * @var array
+     */
+    private $types;
 
     /**
      * @param string $dsn
@@ -27,7 +38,7 @@ class Connection extends \PDO
     {
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
             \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Statement']
+            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Statement', [&$this->placeholders, &$this->types]]
         ]));
     }
 
@@ -39,9 +50,10 @@ class Connection extends \PDO
      */
     public function prepare($sql, $driverOptions = [])
     {
-        $stmt = parent::prepare($sql, $driverOptions);
+        $this->placeholders = $this->types = [];
+        $sql = preg_replace_callback(static::PLACEHOLDER_REGEX, [$this, 'parseQuery'], $sql);
 
-        return $stmt;
+        return parent::prepare($sql, $driverOptions);
     }
 
     /**
@@ -77,6 +89,15 @@ class Connection extends \PDO
         }
 
         return $this;
+    }
+
+    protected function parseQuery($matches)
+    {
+        $name = $matches[2];
+        $this->types[$name] = static::$typeMap[$matches[1]];
+        $this->placeholders[] = $name;
+
+        return '?';
     }
 
     /**
