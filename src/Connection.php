@@ -25,9 +25,10 @@ class Connection extends \PDO
      */
     public function __construct($dsn, $username = null, $password = null, array $attributes = [])
     {
-        parent::__construct($dsn, $username, $password, $attributes);
-        $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, ['Flame\\Statement']);
+        parent::__construct($dsn, $username, $password, array_replace($attributes, [
+            \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Statement']
+        ]));
     }
 
     /**
@@ -36,7 +37,7 @@ class Connection extends \PDO
      *
      * @return Statement
      */
-    public function prepare($sql, array $driverOptions = [])
+    public function prepare($sql, $driverOptions = [])
     {
         $stmt = parent::prepare($sql, $driverOptions);
 

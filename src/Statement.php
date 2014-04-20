@@ -14,7 +14,7 @@ class Statement extends \PDOStatement
      * @return static
      * @throws Exception
      */
-    public function execute(array $parameters = [])
+    public function execute($parameters = null)
     {
         if (!parent::execute($parameters)) {
             throw new Exception();
