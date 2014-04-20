@@ -1,0 +1,26 @@
+{
+  "name": "nkt/flame",
+  "description": "The PDO wrapper with comfortable API for placeholders",
+  "keywords": ["PDO", "sql", "placeholder", "db", "database"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gusakov Nikita",
+      "email": "dev@nkt.me"
+    }
+  ],
+  "require": {
+    "php": "~5.4",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nkt\\Flame\\": "src"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
