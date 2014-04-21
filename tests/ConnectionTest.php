@@ -22,6 +22,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->connection, $this->connection->beginTransaction());
         $this->connection->query("INSERT INTO users(username) VALUES('John Doe')");
         $this->assertSame($this->connection, $this->connection->rollback());
+
+        $this->connection->beginTransaction();
+
+        $this->assertSame($this->connection, $this->connection->commit());
         $this->assertEmpty($this->connection->query('SELECT * FROM users')->fetchAll());
     }
 
@@ -43,5 +47,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'null'    => \PDO::PARAM_NULL,
             'lob'     => \PDO::PARAM_LOB
         ), $this->getObjectAttribute($stmt, 'types'));
+    }
+
+    public function testInvoke()
+    {
+        $connection = $this->connection;
+        $this->assertEquals(
+            $connection->prepare('SELECT * FROM users'),
+            $connection('SELECT * FROM users')
+        );
     }
 }
