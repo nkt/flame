@@ -10,13 +10,13 @@ class Connection extends \PDO
 {
     const PLACEHOLDER_REGEX = '~([sbnilf]{0,1}):(\w+)~';
     protected static $typeMap = [
-        's' => \PDO::PARAM_STR,
         ''  => \PDO::PARAM_STR, // string by default
+        's' => \PDO::PARAM_STR,
+        'i' => \PDO::PARAM_INT,
+        'f' => \PDO::PARAM_STR,
         'b' => \PDO::PARAM_BOOL,
         'n' => \PDO::PARAM_NULL,
-        'i' => \PDO::PARAM_INT,
-        'l' => \PDO::PARAM_LOB,
-        'f' => \PDO::PARAM_STR
+        'l' => \PDO::PARAM_LOB
     ];
 
     /**

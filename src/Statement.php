@@ -17,7 +17,7 @@ class Statement extends \PDOStatement
      */
     private $types;
 
-    private function __construct(&$placeholders, &$types)
+    private function __construct($placeholders, $types)
     {
         $this->placeholders = $placeholders;
         $this->types = $types;
