@@ -46,9 +46,7 @@ class Statement extends \PDOStatement
                 }
             }
         }
-        if (!parent::execute()) {
-            throw new Exception();
-        }
+        parent::execute();
 
         return $this;
     }
@@ -59,9 +57,7 @@ class Statement extends \PDOStatement
      */
     public function closeCursor()
     {
-        if (!parent::closeCursor()) {
-            throw new Exception();
-        }
+        parent::closeCursor();
 
         return $this;
     }
