@@ -62,9 +62,7 @@ class Connection extends \PDO
      */
     public function beginTransaction()
     {
-        if (parent::beginTransaction() === false) {
-            throw new Exception();
-        }
+        parent::beginTransaction();
 
         return $this;
     }
@@ -75,18 +73,14 @@ class Connection extends \PDO
      */
     public function rollback()
     {
-        if (parent::rollback() === false) {
-            throw new Exception();
-        }
+        parent::rollBack();
 
         return $this;
     }
 
     public function commit()
     {
-        if (parent::commit() === false) {
-            throw new Exception();
-        }
+        parent::commit();
 
         return $this;
     }
