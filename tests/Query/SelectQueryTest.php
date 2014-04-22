@@ -65,4 +65,10 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SELECT * FROM "users" ORDER BY "username" ASC', (string)$this->select);
         $this->assertSame('SELECT * FROM "users" ORDER BY "username" ASC, "id" DESC', (string)$this->select->orderBy('id', false));
     }
+
+    public function testBuildOrder()
+    {
+        $this->select->limit(10)->offset(100)->from('users')->groupBy('foo')->orderBy('bar')->column('foo');
+        $this->assertSame('SELECT "foo" FROM "users" ORDER BY "bar" ASC GROUP BY "foo" LIMIT 100, 10', (string)$this->select);
+    }
 }
