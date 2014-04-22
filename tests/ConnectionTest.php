@@ -3,6 +3,7 @@
 namespace Flame\Test;
 
 use Flame\Connection;
+use Flame\Grammar\MysqlGrammar;
 
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,6 +16,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->connection = new Connection('sqlite::memory:');
         $this->connection->query('CREATE TABLE users (id INT PRIMARY KEY, username CHAR(50), sex BOOL)');
+    }
+
+    public function testAnotherGrammar()
+    {
+        $grammar = new MysqlGrammar();
+        $conn = new Connection('sqlite::memory:', '', '', [], $grammar);
+
+        $this->assertSame($grammar, $this->getObjectAttribute($conn, 'grammar'));
     }
 
     public function testFluent()
@@ -47,6 +56,13 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'null'    => \PDO::PARAM_NULL,
             'lob'     => \PDO::PARAM_LOB
         ), $this->getObjectAttribute($stmt, 'types'));
+    }
+
+    public function testSelect()
+    {
+        $this->assertInstanceOf('Flame\\Query\\SelectQuery', $this->connection->select());
+        $select = $this->connection->select('id', 'name', 'count');
+        $this->assertSame(['id', 'name', 'count'], $this->getObjectAttribute($select, 'columns'));
     }
 
     public function testInvoke()

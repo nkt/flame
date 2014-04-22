@@ -2,6 +2,9 @@
 
 namespace Flame;
 
+use Flame\Grammar\Grammar;
+use Flame\Query\SelectQuery;
+
 /**
  * Flame
  * @author Gusakov Nikita <dev@nkt.me>
@@ -27,19 +30,30 @@ class Connection extends \PDO
      * @var array
      */
     private $types;
+    /**
+     * @var Grammar
+     */
+    protected $grammar;
 
     /**
-     * @param string $dsn
-     * @param string $username
-     * @param string $password
-     * @param array  $attributes
+     * @param string  $dsn
+     * @param string  $username
+     * @param string  $password
+     * @param array   $attributes
+     * @param Grammar $grammar
      */
-    public function __construct($dsn, $username = null, $password = null, array $attributes = [])
+    public function __construct($dsn, $username = null, $password = null, array $attributes = [], Grammar $grammar = null)
     {
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
             \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Statement', [&$this->placeholders, &$this->types]]
         ]));
+
+        if ($grammar === null) {
+            $this->grammar = new Grammar();
+        } else {
+            $this->grammar = $grammar;
+        }
     }
 
     /**
@@ -83,6 +97,16 @@ class Connection extends \PDO
         parent::commit();
 
         return $this;
+    }
+
+    /**
+     * @param string $column ...
+     *
+     * @return SelectQuery
+     */
+    public function select()
+    {
+        return new SelectQuery($this->grammar, func_get_args());
     }
 
     protected function parseQuery($matches)
