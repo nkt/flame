@@ -38,6 +38,10 @@ class SelectQuery
      * @var int
      */
     protected $limit;
+    /**
+     * @var Expression
+     */
+    protected $where;
 
     public function __construct(Grammar $grammar, array $columns)
     {
@@ -115,6 +119,34 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param Expression|callable $stmt
+     *
+     * @return static
+     */
+    public function where($stmt)
+    {
+        if ($stmt instanceof Expression) {
+            $this->where = $stmt;
+        } elseif ($stmt instanceof \Closure) {
+            $this->where = $this->expr();
+            call_user_func($stmt, $this->where);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Expression
+     */
+    public function expr()
+    {
+        return new Expression($this->grammar);
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $sql = $this->distinct ? 'SELECT DISTINCT ' : 'SELECT ';
@@ -126,6 +158,10 @@ class SelectQuery
         }
 
         $sql .= ' FROM ' . join(', ', $this->from);
+
+        if ($this->where !== null) {
+            $sql .= ' WHERE ' . $this->where;
+        }
 
         if (!empty($this->orders)) {
             $sql .= ' ORDER BY ' . join(', ', $this->orders);
