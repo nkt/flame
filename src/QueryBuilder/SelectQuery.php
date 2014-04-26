@@ -1,6 +1,6 @@
 <?php
 
-namespace Flame\Query;
+namespace Flame\QueryBuilder;
 
 use Flame\Grammar\Grammar;
 

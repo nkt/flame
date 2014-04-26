@@ -3,7 +3,7 @@
 namespace Flame\Test;
 
 use Flame\Connection;
-use Flame\Statement;
+use Flame\QueryBuilder;
 
 class StatementTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,12 +13,12 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     private $connection;
 
     /**
-     * @var Statement
+     * @var Query
      */
     private $insertQuery;
 
     /**
-     * @var Statement
+     * @var Query
      */
     private $selectQuery;
 

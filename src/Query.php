@@ -3,10 +3,10 @@
 namespace Flame;
 
 /**
- * Statement
+ * Query
  * @author Gusakov Nikita <dev@nkt.me>
  */
-class Statement extends \PDOStatement
+class Query extends \PDOStatement
 {
     /**
      * @var array

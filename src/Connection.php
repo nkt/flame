@@ -3,7 +3,7 @@
 namespace Flame;
 
 use Flame\Grammar\Grammar;
-use Flame\Query\SelectQuery;
+use Flame\QueryBuilder\SelectQuery;
 
 /**
  * Flame
@@ -46,7 +46,7 @@ class Connection extends \PDO
     {
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
             \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Statement', [&$this->placeholders, &$this->types]]
+            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Query', [&$this->placeholders, &$this->types]]
         ]));
 
         if ($grammar === null) {
@@ -60,7 +60,7 @@ class Connection extends \PDO
      * @param string $sql
      * @param array  $driverOptions
      *
-     * @return Statement
+     * @return Query
      */
     public function prepare($sql, $driverOptions = [])
     {
@@ -83,7 +83,6 @@ class Connection extends \PDO
 
     /**
      * @return static
-     * @throws Exception
      */
     public function rollback()
     {
@@ -92,6 +91,9 @@ class Connection extends \PDO
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function commit()
     {
         parent::commit();

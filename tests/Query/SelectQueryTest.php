@@ -3,7 +3,7 @@
 namespace Flame\Test\Query;
 
 use Flame\Grammar\Grammar;
-use Flame\Query\SelectQuery;
+use Flame\QueryBuilder\SelectQuery;
 
 class SelectQueryTest extends \PHPUnit_Framework_TestCase
 {

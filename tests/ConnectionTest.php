@@ -60,7 +60,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testSelect()
     {
-        $this->assertInstanceOf('Flame\\Query\\SelectQuery', $this->connection->select());
+        $this->assertInstanceOf('Flame\\QueryBuilder\\SelectQuery', $this->connection->select());
         $select = $this->connection->select('id', 'name', 'count');
         $this->assertSame(['id', 'name', 'count'], $this->getObjectAttribute($select, 'columns'));
     }
