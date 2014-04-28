@@ -4,6 +4,10 @@ namespace Flame\QueryBuilder;
 
 use Flame\Grammar\Grammar;
 
+/**
+ * Expression
+ * @author Gusakov Nikita <dev@nkt.me>
+ */
 class Expression
 {
     /**

@@ -65,6 +65,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['id', 'name', 'count'], $this->getObjectAttribute($select, 'columns'));
     }
 
+    public function testInsert()
+    {
+        $insert = $this->connection->insert('test', ['foo' => 'bar']);
+        $this->assertInstanceOf('Flame\\QueryBuilder\\InsertQuery', $insert);
+        $this->assertSame('test', $this->getObjectAttribute($insert, 'table'));
+        $this->assertSame(['"foo"' => 'bar'], $this->getObjectAttribute($insert, 'columns'));
+    }
+
     public function testInvoke()
     {
         $connection = $this->connection;

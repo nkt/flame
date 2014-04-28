@@ -3,10 +3,11 @@
 namespace Flame;
 
 use Flame\Grammar\Grammar;
+use Flame\QueryBuilder\InsertQuery;
 use Flame\QueryBuilder\SelectQuery;
 
 /**
- * Flame
+ * Connection
  * @author Gusakov Nikita <dev@nkt.me>
  */
 class Connection extends \PDO
@@ -109,6 +110,17 @@ class Connection extends \PDO
     public function select()
     {
         return new SelectQuery($this->grammar, func_get_args());
+    }
+
+    /**
+     * @param string $table
+     * @param array  $columns
+     *
+     * @return InsertQuery
+     */
+    public function insert($table, array $columns = [])
+    {
+        return new InsertQuery($this->grammar, $table, $columns);
     }
 
     protected function parseQuery($matches)

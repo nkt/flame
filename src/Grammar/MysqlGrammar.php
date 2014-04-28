@@ -2,6 +2,10 @@
 
 namespace Flame\Grammar;
 
+/**
+ * Mysql grammar
+ * @author Gusakov Nikita <dev@nkt.me>
+ */
 class MysqlGrammar extends Grammar
 {
     public function buildIdWithAlias($id, $alias)

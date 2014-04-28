@@ -4,6 +4,10 @@ namespace Flame\QueryBuilder;
 
 use Flame\Grammar\Grammar;
 
+/**
+ * Select query
+ * @author Gusakov Nikita <dev@nkt.me>
+ */
 class SelectQuery
 {
     /**
