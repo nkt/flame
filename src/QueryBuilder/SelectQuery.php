@@ -159,8 +159,8 @@ class SelectQuery
 
         $sql .= ' FROM ' . join(', ', $this->from);
 
-        if ($this->where !== null) {
-            $sql .= ' WHERE ' . $this->where;
+        if ('' !== $where = (string)$this->where) {
+            $sql .= ' WHERE ' . $where;
         }
 
         if (!empty($this->orders)) {

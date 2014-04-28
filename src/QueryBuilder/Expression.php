@@ -106,7 +106,7 @@ class Expression
      */
     public function in($column, $argument)
     {
-        $this->conditions = [$this->grammar->buildId($column) . ' IN (' . $argument . ')'];
+        $this->conditions = [$this->grammar->buildId($column) . ' IN(' . $argument . ')'];
 
         return $this;
     }
@@ -119,7 +119,7 @@ class Expression
      */
     public function notIn($column, $argument)
     {
-        $this->conditions = [$this->grammar->buildId($column) . ' NOT IN (' . $argument . ')'];
+        $this->conditions = [$this->grammar->buildId($column) . ' NOT IN(' . $argument . ')'];
 
         return $this;
     }
@@ -288,7 +288,7 @@ class Expression
      */
     public function andIn($column, $argument)
     {
-        $this->conditions[] = 'AND ' . $this->grammar->buildId($column) . ' IN (' . $argument . ')';
+        $this->conditions[] = 'AND ' . $this->grammar->buildId($column) . ' IN(' . $argument . ')';
 
         return $this;
     }
@@ -301,7 +301,7 @@ class Expression
      */
     public function andNotIn($column, $argument)
     {
-        $this->conditions[] = 'AND ' . $this->grammar->buildId($column) . ' NOT IN (' . $argument . ')';
+        $this->conditions[] = 'AND ' . $this->grammar->buildId($column) . ' NOT IN(' . $argument . ')';
 
         return $this;
     }
@@ -470,7 +470,7 @@ class Expression
      */
     public function orIn($column, $argument)
     {
-        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' IN (' . $argument . ')';
+        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' IN(' . $argument . ')';
 
         return $this;
     }
@@ -483,7 +483,7 @@ class Expression
      */
     public function orNotIn($column, $argument)
     {
-        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' NOT IN (' . $argument . ')';
+        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' NOT IN(' . $argument . ')';
 
         return $this;
     }
@@ -497,7 +497,7 @@ class Expression
      */
     public function orBetween($column, $left, $right)
     {
-        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' BETWEEN ' . $left . ' OR ' . $right;
+        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' BETWEEN ' . $left . ' AND ' . $right;
 
         return $this;
     }
@@ -511,7 +511,7 @@ class Expression
      */
     public function orNotBetween($column, $left, $right)
     {
-        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' NOT BETWEEN ' . $left . ' OR ' . $right;
+        $this->conditions[] = 'OR ' . $this->grammar->buildId($column) . ' NOT BETWEEN ' . $left . ' AND ' . $right;
 
         return $this;
     }

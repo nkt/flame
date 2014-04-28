@@ -3,6 +3,7 @@
 namespace Flame\Test\Query;
 
 use Flame\Grammar\Grammar;
+use Flame\QueryBuilder\Expression;
 use Flame\QueryBuilder\SelectQuery;
 
 class SelectQueryTest extends \PHPUnit_Framework_TestCase
@@ -70,5 +71,36 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     {
         $this->select->limit(10)->offset(100)->from('users')->groupBy('foo')->orderBy('bar')->column('foo');
         $this->assertSame('SELECT "foo" FROM "users" ORDER BY "bar" ASC GROUP BY "foo" LIMIT 100, 10', (string)$this->select);
+    }
+
+    public function testExpr()
+    {
+        $expr = $this->select->expr();
+
+        $this->assertInstanceOf('Flame\\QueryBuilder\\Expression', $expr);
+        $this->assertSame(
+            $this->getObjectAttribute($this->select, 'grammar'),
+            $this->getObjectAttribute($expr, 'grammar')
+        );
+    }
+
+    public function testWhere()
+    {
+        $this->select->from('users')->where($this->select->expr()->equal('foo', ':bar'));
+        $this->assertSame('SELECT * FROM "users" WHERE "foo" = :bar', (string)$this->select);
+    }
+
+    public function testEmptyWhere()
+    {
+        $this->select->from('users')->where($this->select->expr());
+        $this->assertSame('SELECT * FROM "users"', (string)$this->select);
+    }
+
+    public function testWhereWithClosure()
+    {
+        $this->select->from('users')->where(function (Expression $e) {
+            $e->equal('foo', ':bar');
+        });
+        $this->assertSame('SELECT * FROM "users" WHERE "foo" = :bar', (string)$this->select);
     }
 }
