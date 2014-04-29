@@ -45,6 +45,10 @@ class SelectQuery
      * @var int
      */
     protected $limit;
+    /**
+     * @var SelectQuery[]
+     */
+    protected $unions = [];
 
     public function __construct(Grammar $grammar, array $columns)
     {
@@ -123,6 +127,18 @@ class SelectQuery
     }
 
     /**
+     * @param SelectQuery $select
+     *
+     * @return static
+     */
+    public function union(SelectQuery $select)
+    {
+        $this->unions[] = (string)$select;
+
+        return $this;
+    }
+
+    /**
      * @return Expression
      */
     public function expr()
@@ -163,6 +179,9 @@ class SelectQuery
             } else {
                 $sql .= ' LIMIT ' . $this->limit;
             }
+        }
+        if (!empty($this->unions)) {
+            $sql .= "\nUNION\n" . join("\nUNION\n", $this->unions);
         }
 
         return $sql;
