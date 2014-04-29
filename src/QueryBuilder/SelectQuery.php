@@ -3,6 +3,7 @@
 namespace Flame\QueryBuilder;
 
 use Flame\Grammar\Grammar;
+use Flame\QueryBuilder\Part\WherePart;
 
 /**
  * Select query
@@ -10,6 +11,8 @@ use Flame\Grammar\Grammar;
  */
 class SelectQuery
 {
+    use WherePart;
+
     /**
      * @var Grammar
      */
@@ -42,10 +45,6 @@ class SelectQuery
      * @var int
      */
     protected $limit;
-    /**
-     * @var Expression
-     */
-    protected $where;
 
     public function __construct(Grammar $grammar, array $columns)
     {
@@ -111,31 +110,14 @@ class SelectQuery
 
     public function limit($max)
     {
-        $this->limit = (int)$max;
+        $this->limit = $max;
 
         return $this;
     }
 
     public function offset($offset)
     {
-        $this->offset = (int)$offset;
-
-        return $this;
-    }
-
-    /**
-     * @param Expression|callable $stmt
-     *
-     * @return static
-     */
-    public function where($stmt)
-    {
-        if ($stmt instanceof Expression) {
-            $this->where = $stmt;
-        } elseif ($stmt instanceof \Closure) {
-            $this->where = $this->expr();
-            call_user_func($stmt, $this->where);
-        }
+        $this->offset = $offset;
 
         return $this;
     }

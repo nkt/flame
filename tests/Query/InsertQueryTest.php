@@ -19,7 +19,7 @@ class InsertQueryTest extends \PHPUnit_Framework_TestCase
     public function testFrom()
     {
         $insert = new InsertQuery(new Grammar(), 'test', []);
-        $insert->into('users');
+        $insert->table('users');
         $this->assertSame('INSERT INTO "users"() VALUES()', (string)$insert);
     }
 

@@ -5,6 +5,7 @@ namespace Flame;
 use Flame\Grammar\Grammar;
 use Flame\QueryBuilder\InsertQuery;
 use Flame\QueryBuilder\SelectQuery;
+use Flame\QueryBuilder\UpdateQuery;
 
 /**
  * Connection
@@ -121,6 +122,17 @@ class Connection extends \PDO
     public function insert($table, array $columns = [])
     {
         return new InsertQuery($this->grammar, $table, $columns);
+    }
+
+    /**
+     * @param string $table
+     * @param array  $columns
+     *
+     * @return UpdateQuery
+     */
+    public function update($table, array $columns = [])
+    {
+        return new UpdateQuery($this->grammar, $table, $columns);
     }
 
     protected function parseQuery($matches)
