@@ -3,6 +3,7 @@
 namespace Flame\QueryBuilder;
 
 use Flame\Grammar\Grammar;
+use Flame\QueryBuilder\Part\JoinPart;
 use Flame\QueryBuilder\Part\WherePart;
 
 /**
@@ -12,6 +13,7 @@ use Flame\QueryBuilder\Part\WherePart;
 class SelectQuery
 {
     use WherePart;
+    use JoinPart;
 
     /**
      * @var Grammar
@@ -148,6 +150,14 @@ class SelectQuery
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getGrammar()
+    {
+        return $this->grammar;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -161,6 +171,10 @@ class SelectQuery
         }
 
         $sql .= ' FROM ' . join(', ', $this->from);
+
+        if (!empty($this->joins)) {
+            $sql .= ' ' . join(' ', $this->joins);
+        }
 
         if ('' !== $where = (string)$this->where) {
             $sql .= ' WHERE ' . $where;

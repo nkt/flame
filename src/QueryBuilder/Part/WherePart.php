@@ -25,7 +25,7 @@ trait WherePart
         if ($stmt instanceof Expression) {
             $this->where = $stmt;
         } elseif ($stmt instanceof \Closure) {
-            $this->where = $this->expr();
+            $this->where = new Expression($this->getGrammar());
             call_user_func($stmt, $this->where);
         }
 
@@ -33,7 +33,7 @@ trait WherePart
     }
 
     /**
-     * @return Expression
+     * @return \Flame\Grammar\Grammar
      */
-    abstract public function expr();
+    abstract protected function getGrammar();
 } 

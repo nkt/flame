@@ -36,6 +36,14 @@ class UpdateQuery extends SaveQuery
     /**
      * {@inheritdoc}
      */
+    protected function getGrammar()
+    {
+        return $this->grammar;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
         $set = [];
