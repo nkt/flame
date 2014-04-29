@@ -38,11 +38,11 @@ class SelectQuery
      */
     protected $orders = [];
     /**
-     * @var int
+     * @var string|int
      */
     protected $offset;
     /**
-     * @var int
+     * @var string|int
      */
     protected $limit;
     /**

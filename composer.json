@@ -1,7 +1,7 @@
 {
   "name": "nkt/flame",
   "description": "The PDO wrapper with comfortable API for placeholders",
-  "keywords": ["PDO", "sql", "placeholder", "db", "database"],
+  "keywords": ["PDO", "sql", "placeholder", "db", "database", "query-builder"],
   "license": "MIT",
   "authors": [
     {
