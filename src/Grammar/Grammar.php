@@ -8,6 +8,8 @@ namespace Flame\Grammar;
  */
 class Grammar
 {
+    const QUOTE_CHAR = '"';
+
     public function buildId($id)
     {
         $parts = explode(' ', $id, 2);
@@ -25,6 +27,10 @@ class Grammar
 
     protected function wrap($id)
     {
-        return '"' . $id . '"';
+        $parts = explode('.', $id, 3);
+
+        return join('.', array_map(function ($id) {
+            return static::QUOTE_CHAR . $id . static::QUOTE_CHAR;
+        }, $parts));
     }
 } 
