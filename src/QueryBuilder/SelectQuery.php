@@ -128,12 +128,13 @@ class SelectQuery
 
     /**
      * @param SelectQuery $select
+     * @param bool        $all
      *
      * @return static
      */
-    public function union(SelectQuery $select)
+    public function union(SelectQuery $select, $all = false)
     {
-        $this->unions[] = (string)$select;
+        $this->unions[] = "\nUNION" . ($all ? ' ALL' : '') . "\n" . $select;
 
         return $this;
     }
@@ -181,7 +182,7 @@ class SelectQuery
             }
         }
         if (!empty($this->unions)) {
-            $sql .= "\nUNION\n" . join("\nUNION\n", $this->unions);
+            $sql .= join('', $this->unions);
         }
 
         return $sql;

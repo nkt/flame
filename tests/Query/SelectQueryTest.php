@@ -113,8 +113,8 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testUnion()
     {
-        $select = $this->select()->from('users')->union($this->select()->from('old_users'));
-        $expected = "SELECT * FROM \"users\"\nUNION\nSELECT * FROM \"old_users\"";
+        $select = $this->select()->from('users')->union($this->select()->from('old_users'), true);
+        $expected = "SELECT * FROM \"users\"\nUNION ALL\nSELECT * FROM \"old_users\"";
         $this->assertEquals($expected, (string)$select);
 
         $select->union($this->select()->from('new_users'));
