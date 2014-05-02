@@ -9,6 +9,8 @@ namespace Flame\Grammar;
 class Grammar
 {
     const QUOTE_CHAR = '"';
+    const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+    const TIME_FORMAT = 'H:i:s';
 
     public function buildId($id)
     {
@@ -23,6 +25,52 @@ class Grammar
     public function buildIdWithAlias($id, $alias)
     {
         return $this->wrap($id) . ' AS ' . $this->wrap($alias);
+    }
+
+    /**
+     * @param \DateTime|int|string $value
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function buildDateTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format(static::DATE_TIME_FORMAT);
+        } elseif (is_int($value)) {
+            $date = new \DateTime();
+            $date->setTimestamp($value);
+
+            return $date->format(static::DATE_TIME_FORMAT);
+        } elseif (is_string($value)) {
+            $date = new \DateTime($value);
+
+            return $date->format(static::DATE_TIME_FORMAT);
+        }
+        throw new \InvalidArgumentException('DateTime value should be int, string or \DateTime');
+    }
+
+    /**
+     * @param \DateTime|int|string $value
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function buildTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format(static::TIME_FORMAT);
+        } elseif (is_int($value)) {
+            $date = new \DateTime();
+            $date->setTimestamp($value);
+
+            return $date->format(static::TIME_FORMAT);
+        } elseif (is_string($value)) {
+            $date = new \DateTime($value);
+
+            return $date->format(static::TIME_FORMAT);
+        }
+        throw new \InvalidArgumentException('Time value should be int, string or \DateTime');
     }
 
     protected function wrap($id)

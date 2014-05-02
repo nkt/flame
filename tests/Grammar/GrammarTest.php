@@ -18,4 +18,34 @@ class GrammarTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('"users" AS "u"', $grammar->buildId('users u'));
         $this->assertSame('"users" AS "u"', $grammar->buildIdWithAlias('users', 'u'));
     }
+
+    public function testBuildDateTime()
+    {
+        $grammar = new Grammar();
+        $date = new \DateTime();
+        $expected = $date->format(Grammar::DATE_TIME_FORMAT);
+
+        $this->assertEquals($expected, $grammar->buildDateTime($date));
+        $this->assertEquals($expected, $grammar->buildDateTime($date->getTimestamp()));
+        $this->assertEquals($expected, $grammar->buildDateTime($expected));
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $grammar->buildDateTime([]);
+    }
+
+    public function testBuildTime()
+    {
+        $grammar = new Grammar();
+        $date = new \DateTime();
+        $expected = $date->format(Grammar::TIME_FORMAT);
+
+        $this->assertEquals($expected, $grammar->buildTime($date));
+        $this->assertEquals($expected, $grammar->buildTime($date->getTimestamp()));
+        $this->assertEquals($expected, $grammar->buildTime($expected));
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $grammar->buildTime([]);
+    }
 }

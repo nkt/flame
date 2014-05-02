@@ -13,15 +13,19 @@ use Flame\QueryBuilder\UpdateQuery;
  */
 class Connection extends \PDO
 {
-    const PLACEHOLDER_REGEX = '~([sbnilf]{0,1}):(\w+)~';
+    const PLACEHOLDER_REGEX = '~([sbnilfdt]{0,1}):(\w+)~';
+    const PARAM_DATE_TIME = -1;
+    const PARAM_TIME = -2;
     protected static $typeMap = [
-        ''  => \PDO::PARAM_STR, // string by default
-        's' => \PDO::PARAM_STR,
-        'i' => \PDO::PARAM_INT,
-        'f' => \PDO::PARAM_STR,
-        'b' => \PDO::PARAM_BOOL,
-        'n' => \PDO::PARAM_NULL,
-        'l' => \PDO::PARAM_LOB
+        ''  => self::PARAM_STR, // string by default
+        's' => self::PARAM_STR,
+        'i' => self::PARAM_INT,
+        'f' => self::PARAM_STR,
+        'b' => self::PARAM_BOOL,
+        'n' => self::PARAM_NULL,
+        'l' => self::PARAM_LOB,
+        'd' => self::PARAM_DATE_TIME,
+        't' => self::PARAM_TIME
     ];
 
     /**
@@ -48,7 +52,7 @@ class Connection extends \PDO
     {
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
             \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Query', [&$this->placeholders, &$this->types]]
+            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Query', [&$this->grammar, &$this->placeholders, &$this->types]]
         ]));
 
         if ($grammar === null) {
