@@ -102,6 +102,14 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SELECT * FROM "users"', (string)$select);
     }
 
+    public function testJoin()
+    {
+        $select = $this->select();
+        $select->from('comments c')->join('users u', 'u.id', 'c.user_id');
+
+        $this->assertSame('SELECT * FROM "comments" AS "c" INNER JOIN "users" AS "u" ON "u"."id" = "c"."user_id"', (string)$select);
+    }
+
     public function testWhereWithClosure()
     {
         $select = $this->select();
