@@ -19,9 +19,20 @@ class Expression
      */
     protected $grammar;
 
-    public function __construct(Grammar $grammar)
+    /**
+     * @param Grammar    $grammar
+     * @param array|null $valueMap
+     */
+    public function __construct(Grammar $grammar, array $valueMap = null)
     {
         $this->grammar = $grammar;
+        if ($valueMap !== null) {
+            $conditions = [];
+            foreach ($valueMap as $id => $value) {
+                $conditions[] = $grammar->buildId($id) . ' = ' . $value;
+            }
+            $this->conditions[] = join(' AND ', $conditions);
+        }
     }
 
     /**
