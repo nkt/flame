@@ -15,7 +15,8 @@ For example:
 ```sql
 SELECT * FROM goods g WHERE g.price BETWEEN f:minPrice AND f:maxPrice;
 SELECT * FROM users u WHERE u.username = s:username; -- :username also bind as string
-SELECT * FROM orders o WHERE o.id = i:id
+SELECT * FROM orders o WHERE o.id = i:id;
+SELECT * FROM users u WHERE u.registered >= d:date;
 ```
 
 Placeholder types:
@@ -26,3 +27,5 @@ Placeholder types:
  - `b`oolean
  - `n`ull
  - b`l`ob
+ - `d`atetime
+ - `t`ime
