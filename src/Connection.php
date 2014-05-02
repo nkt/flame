@@ -108,13 +108,13 @@ class Connection extends \PDO
     }
 
     /**
-     * @param string $column ...
+     * @param string $column,...
      *
      * @return SelectQuery
      */
-    public function select()
+    public function select($column = null)
     {
-        return new SelectQuery($this->grammar, func_get_args());
+        return new SelectQuery($this->grammar, $column === null ? [] : func_get_args());
     }
 
     /**
