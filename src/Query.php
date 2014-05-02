@@ -81,7 +81,7 @@ class Query extends \PDOStatement
      *
      * @return array
      */
-    public function fetchCallback(callable $callback, $mode = \PDO::FETCH_ASSOC)
+    public function fetchCallback(callable $callback, $mode = null)
     {
         $results = [];
         while (false !== $row = $this->fetch($mode)) {

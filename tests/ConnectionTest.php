@@ -18,6 +18,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->connection->query('CREATE TABLE users (id INT PRIMARY KEY, username CHAR(50), sex BOOL)');
     }
 
+    public function testSetDefaultFetchMode()
+    {
+        $this->assertSame(\PDO::FETCH_ASSOC, $this->connection->getAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE));
+
+        $mode = \PDO::FETCH_OBJ;
+
+        $this->assertSame($this->connection, $this->connection->setDefaultFetchMode($mode));
+        $this->assertSame($mode, $this->connection->getAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE));
+    }
+
     public function testAnotherGrammar()
     {
         $grammar = new MysqlGrammar();

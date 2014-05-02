@@ -51,8 +51,9 @@ class Connection extends \PDO
     public function __construct($dsn, $username = null, $password = null, array $attributes = [], Grammar $grammar = null)
     {
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
-            \PDO::ATTR_ERRMODE         => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_STATEMENT_CLASS => ['Flame\\Query', [&$this->grammar, &$this->placeholders, &$this->types]]
+            self::ATTR_ERRMODE            => self::ERRMODE_EXCEPTION,
+            self::ATTR_DEFAULT_FETCH_MODE => self::FETCH_ASSOC,
+            self::ATTR_STATEMENT_CLASS    => ['Flame\\Query', [&$this->grammar, &$this->placeholders, &$this->types]],
         ]));
 
         if ($grammar === null) {
@@ -109,6 +110,18 @@ class Connection extends \PDO
     public function commit()
     {
         parent::commit();
+
+        return $this;
+    }
+
+    /**
+     * @param int $mode
+     *
+     * @return static
+     */
+    public function setDefaultFetchMode($mode)
+    {
+        $this->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, $mode);
 
         return $this;
     }
