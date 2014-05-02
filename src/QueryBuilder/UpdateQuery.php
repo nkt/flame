@@ -56,7 +56,7 @@ class UpdateQuery extends SaveQuery
         }
         $sql .= $this->grammar->buildId($this->table) . ' SET ' . join(', ', $set);
         if ('' !== $where = (string)$this->where) {
-            $sql .= ' WHERE ' . $this->where;
+            $sql .= ' WHERE ' . $where;
         }
 
         return $sql;
