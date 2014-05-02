@@ -16,22 +16,25 @@ trait JoinPart
     protected $joins = [];
 
     /**
-     * @param string                     $type
      * @param string                     $table
      * @param Expression|callable|string $on
+     * @param string|null                $joinField
+     * @param string                     $type
      *
      * @return static
      */
-    public function join($type, $table, $on)
+    public function join($table, $on, $joinField = null, $type = 'INNER')
     {
         $grammar = $this->getGrammar();
         $join = $type . ' JOIN ' . $grammar->buildId($table) . ' ON ';
-        if ($on instanceof Expression) {
-            $join .= $on;
+        if ($joinField !== null) {
+            $join .= $grammar->buildId($on) . ' = ' . $grammar->buildId($joinField);
         } elseif ($on instanceof \Closure) {
             $expr = new Expression($this->getGrammar());
             call_user_func($on, $expr);
             $join .= $expr;
+        } else {
+            $join .= $on;
         }
         $this->joins[] = $join;
 
@@ -41,56 +44,49 @@ trait JoinPart
     /**
      * @param string                     $table
      * @param Expression|callable|string $on
+     * @param string|null                $joinField
      *
      * @return static
      */
-    public function innerJoin($table, $on)
+    public function leftJoin($table, $on, $joinField = null)
     {
-        return $this->join('INNER', $table, $on);
+        return $this->join($table, $on, $joinField, 'LEFT');
     }
 
     /**
      * @param string                     $table
      * @param Expression|callable|string $on
+     * @param string|null                $joinField
      *
      * @return static
      */
-    public function leftJoin($table, $on)
+    public function rightJoin($table, $on, $joinField = null)
     {
-        return $this->join('LEFT', $table, $on);
+        return $this->join($table, $on, $joinField, 'RIGHT');
     }
 
     /**
      * @param string                     $table
      * @param Expression|callable|string $on
+     * @param string|null                $joinField
      *
      * @return static
      */
-    public function rightJoin($table, $on)
+    public function fullJoin($table, $on, $joinField = null)
     {
-        return $this->join('RIGHT', $table, $on);
+        return $this->join($table, $on, $joinField, 'FULL');
     }
 
     /**
      * @param string                     $table
      * @param Expression|callable|string $on
+     * @param string|null                $joinField
      *
      * @return static
      */
-    public function fullJoin($table, $on)
+    public function crossJoin($table, $on, $joinField = null)
     {
-        return $this->join('FULL', $table, $on);
-    }
-
-    /**
-     * @param string                     $table
-     * @param Expression|callable|string $on
-     *
-     * @return static
-     */
-    public function crossJoin($table, $on)
-    {
-        return $this->join('CROSS', $table, $on);
+        return $this->join($table, $on, $joinField, 'CROSS');
     }
 
     /**

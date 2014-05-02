@@ -1,6 +1,6 @@
 <?php
 
-namespace Flame\Test\Query;
+namespace Flame\Test\QueryBuilder;
 
 use Flame\Grammar\Grammar;
 use Flame\QueryBuilder\InsertQuery;
