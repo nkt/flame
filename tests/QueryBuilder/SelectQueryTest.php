@@ -3,7 +3,6 @@
 namespace Flame\Test\QueryBuilder;
 
 use Flame\Grammar\Grammar;
-use Flame\QueryBuilder\Expression;
 use Flame\QueryBuilder\SelectQuery;
 
 class SelectQueryTest extends \PHPUnit_Framework_TestCase
@@ -91,7 +90,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testWhere()
     {
         $select = $this->select();
-        $select->from('users')->where($select->expr()->equal('foo', ':bar'));
+        $select->from('users')->where(['foo' => ':bar']);
         $this->assertSame('SELECT * FROM "users" WHERE "foo" = :bar', (string)$select);
     }
 
@@ -108,15 +107,6 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
         $select->from('comments c')->join('users u', 'u.id', 'c.user_id');
 
         $this->assertSame('SELECT * FROM "comments" AS "c" INNER JOIN "users" AS "u" ON "u"."id" = "c"."user_id"', (string)$select);
-    }
-
-    public function testWhereWithClosure()
-    {
-        $select = $this->select();
-        $select->from('users')->where(function (Expression $e) {
-            $e->equal('foo', ':bar');
-        });
-        $this->assertSame('SELECT * FROM "users" WHERE "foo" = :bar', (string)$select);
     }
 
     public function testUnion()

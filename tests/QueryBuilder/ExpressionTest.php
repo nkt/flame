@@ -7,9 +7,14 @@ use Flame\QueryBuilder\Expression;
 
 class ExpressionTest extends \PHPUnit_Framework_TestCase
 {
-    protected function expr()
+    private function getGrammar()
     {
-        return new Expression(new Grammar());
+        return new Grammar();
+    }
+
+    private function expr(array $valueMap = null)
+    {
+        return new Expression($this->getGrammar(), $valueMap);
     }
 
     public function testBase()
@@ -84,11 +89,18 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
 
     public function testSubExpression()
     {
-        $expr = $this->expr()
-            ->equal('foo', ':bar')
-            ->orExpression($this->expr()
-                ->equal('bar', ':baz')
-                ->andExpression($this->expr()->more('age', ':age')));
+        $expr = $this->expr()->equal('foo', ':bar')
+            ->orExpression($this->expr()->equal('bar', ':baz')
+                    ->andExpression(
+                        $this->expr()->more('age', ':age')
+                    )
+            );
         $this->assertSame('"foo" = :bar OR ("bar" = :baz AND ("age" > :age))', (string)$expr);
+    }
+
+    public function testValueMap()
+    {
+        $this->assertSame('"foo" = :bar', (string)$this->expr(['foo' => ':bar']));
+        $this->assertSame('"foo" = :bar AND "bar" = :foo', (string)$this->expr(['foo' => ':bar', 'bar' => ':foo']));
     }
 }
