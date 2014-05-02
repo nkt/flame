@@ -61,12 +61,14 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
             return $data['id'];
         });
+
         $this->assertCount($i, $results);
     }
 
     public function testCloseCursor()
     {
         iterator_to_array($this->selectQuery->execute());
+
         $this->assertEquals($this->selectQuery, $this->selectQuery->closeCursor());
     }
 

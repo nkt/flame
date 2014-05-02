@@ -6,46 +6,55 @@ use Flame\Grammar\Grammar;
 
 class GrammarTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Grammar
+     */
+    private $grammar;
+
+    protected function setUp()
+    {
+        $this->grammar = new Grammar();
+    }
+
     public function testBuildId()
     {
-        $grammar = new Grammar();
+        $this->assertSame('"users"', $this->grammar->buildId('users'));
+        $this->assertSame('"users" AS "u"', $this->grammar->buildId('users u'));
+        $this->assertSame('"users" AS "u"', $this->grammar->buildIdWithAlias('users', 'u'));
+    }
 
-        $this->assertSame('"users"', $grammar->buildId('users'));
-        $this->assertSame('"users"."username"', $grammar->buildId('users.username'));
-        $this->assertSame('"db"."users"."username"', $grammar->buildId('db.users.username'));
-        $this->assertSame('"db"."users"."username.foo"', $grammar->buildId('db.users.username.foo'));
-
-        $this->assertSame('"users" AS "u"', $grammar->buildId('users u'));
-        $this->assertSame('"users" AS "u"', $grammar->buildIdWithAlias('users', 'u'));
+    public function testBuildNestedId()
+    {
+        $this->assertSame('"users"."username"', $this->grammar->buildId('users.username'));
+        $this->assertSame('"db"."users"."username"', $this->grammar->buildId('db.users.username'));
+        $this->assertSame('"db"."users"."username.foo"', $this->grammar->buildId('db.users.username.foo'));
     }
 
     public function testBuildDateTime()
     {
-        $grammar = new Grammar();
         $date = new \DateTime();
         $expected = $date->format(Grammar::DATE_TIME_FORMAT);
 
-        $this->assertEquals($expected, $grammar->buildDateTime($date));
-        $this->assertEquals($expected, $grammar->buildDateTime($date->getTimestamp()));
-        $this->assertEquals($expected, $grammar->buildDateTime($expected));
+        $this->assertEquals($expected, $this->grammar->buildDateTime($date));
+        $this->assertEquals($expected, $this->grammar->buildDateTime($date->getTimestamp()));
+        $this->assertEquals($expected, $this->grammar->buildDateTime($expected));
 
         $this->setExpectedException('InvalidArgumentException');
 
-        $grammar->buildDateTime([]);
+        $this->grammar->buildDateTime([]);
     }
 
     public function testBuildTime()
     {
-        $grammar = new Grammar();
         $date = new \DateTime();
         $expected = $date->format(Grammar::TIME_FORMAT);
 
-        $this->assertEquals($expected, $grammar->buildTime($date));
-        $this->assertEquals($expected, $grammar->buildTime($date->getTimestamp()));
-        $this->assertEquals($expected, $grammar->buildTime($expected));
+        $this->assertEquals($expected, $this->grammar->buildTime($date));
+        $this->assertEquals($expected, $this->grammar->buildTime($date->getTimestamp()));
+        $this->assertEquals($expected, $this->grammar->buildTime($expected));
 
         $this->setExpectedException('InvalidArgumentException');
 
-        $grammar->buildTime([]);
+        $this->grammar->buildTime([]);
     }
 }

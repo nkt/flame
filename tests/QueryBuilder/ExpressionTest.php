@@ -7,14 +7,9 @@ use Flame\QueryBuilder\Expression;
 
 class ExpressionTest extends \PHPUnit_Framework_TestCase
 {
-    private function getGrammar()
-    {
-        return new Grammar();
-    }
-
     private function expr(array $valueMap = null)
     {
-        return new Expression($this->getGrammar(), $valueMap);
+        return new Expression(new Grammar(), $valueMap);
     }
 
     public function testBase()

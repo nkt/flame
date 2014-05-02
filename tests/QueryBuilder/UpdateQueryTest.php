@@ -11,9 +11,11 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     public function testInitialState()
     {
         $update = new UpdateQuery(new Grammar(), 'test', []);
+        
         $this->assertSame('UPDATE "test" SET ', (string)$update);
 
         $update = new UpdateQuery(new Grammar(), 'test', ['foo' => 'bar']);
+
         $this->assertSame('UPDATE "test" SET "foo" = bar', (string)$update);
     }
 
@@ -21,6 +23,7 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     {
         $update = new UpdateQuery(new Grammar(), 'test', []);
         $update->table('users');
+
         $this->assertSame('UPDATE "users" SET ', (string)$update);
     }
 
@@ -28,9 +31,11 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     {
         $update = new UpdateQuery(new Grammar(), 'test', []);
         $update->column('foo', 'bar');
+
         $this->assertSame('UPDATE "test" SET "foo" = bar', (string)$update);
 
         $update->columns(['foo' => 1, 'bar' => 2]);
+
         $this->assertSame('UPDATE "test" SET "foo" = 1, "bar" = 2', (string)$update);
     }
 
@@ -38,6 +43,7 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     {
         $update = new UpdateQuery(new Grammar(), 'test', ['foo' => 'bar']);
         $update->top(5);
+
         $this->assertEquals('UPDATE top(5) "test" SET "foo" = bar', (string)$update);
     }
 
@@ -45,6 +51,7 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     {
         $update = new UpdateQuery(new Grammar(), 'test', ['foo' => 'bar']);
         $update->where($update->expr()->equal('foo', ':bar'));
+
         $this->assertEquals('UPDATE "test" SET "foo" = bar WHERE "foo" = :bar', (string)$update);
     }
 
@@ -52,6 +59,7 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
     {
         $update = new UpdateQuery(new Grammar(), 'test', ['foo' => 'bar']);
         $update->where($update->expr());
+
         $this->assertSame('UPDATE "test" SET "foo" = bar', (string)$update);
     }
 
@@ -61,6 +69,7 @@ class UpdateQueryTest extends \PHPUnit_Framework_TestCase
         $update->where(function (Expression $e) {
             $e->equal('foo', ':bar');
         });
+
         $this->assertSame('UPDATE "test" SET "foo" = bar WHERE "foo" = :bar', (string)$update);
     }
 }

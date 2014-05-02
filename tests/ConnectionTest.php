@@ -23,13 +23,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $grammar = new MysqlGrammar();
         $conn = new Connection('sqlite::memory:', '', '', [], $grammar);
 
-        $this->assertSame($grammar, $this->getObjectAttribute($conn, 'grammar'));
+        $this->assertAttributeSame($grammar, 'grammar', $conn);
     }
 
     public function testFluent()
     {
         $this->assertSame($this->connection, $this->connection->beginTransaction());
+
         $this->connection->query("INSERT INTO users(username) VALUES('John Doe')");
+
         $this->assertSame($this->connection, $this->connection->rollback());
 
         $this->connection->beginTransaction();
@@ -49,7 +51,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             array('default', 'string', 'int', 'float', 'bool', 'null', 'lob', 'date', 'time'),
             $this->getObjectAttribute($stmt, 'placeholders')
         );
-        $this->assertSame(array(
+        $this->assertAttributeSame(array(
             'default' => \PDO::PARAM_STR,
             'string'  => \PDO::PARAM_STR,
             'int'     => \PDO::PARAM_INT,
@@ -59,35 +61,39 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'lob'     => \PDO::PARAM_LOB,
             'date'    => Connection::PARAM_DATE_TIME,
             'time'    => Connection::PARAM_TIME
-        ), $this->getObjectAttribute($stmt, 'types'));
+        ), 'types', $stmt);
     }
 
     public function testSelect()
     {
-        $this->assertInstanceOf('Flame\\QueryBuilder\\SelectQuery', $this->connection->select());
         $select = $this->connection->select('id', 'name', 'count');
-        $this->assertSame(['id', 'name', 'count'], $this->getObjectAttribute($select, 'columns'));
+
+        $this->assertInstanceOf('Flame\\QueryBuilder\\SelectQuery', $select);
+        $this->assertAttributeSame(['id', 'name', 'count'], 'columns', $select);
     }
 
     public function testInsert()
     {
         $insert = $this->connection->insert('test', ['foo' => 'bar']);
+
         $this->assertInstanceOf('Flame\\QueryBuilder\\InsertQuery', $insert);
-        $this->assertSame('test', $this->getObjectAttribute($insert, 'table'));
-        $this->assertSame(['"foo"' => 'bar'], $this->getObjectAttribute($insert, 'columns'));
+        $this->assertAttributeSame('test', 'table', $insert);
+        $this->assertAttributeSame(['"foo"' => 'bar'], 'columns', $insert);
     }
 
     public function testUpdate()
     {
         $update = $this->connection->update('test', ['foo' => 'bar']);
+
         $this->assertInstanceOf('Flame\\QueryBuilder\\UpdateQuery', $update);
-        $this->assertSame('test', $this->getObjectAttribute($update, 'table'));
-        $this->assertSame(['"foo"' => 'bar'], $this->getObjectAttribute($update, 'columns'));
+        $this->assertAttributeSame('test', 'table', $update);
+        $this->assertAttributeSame(['"foo"' => 'bar'], 'columns', $update);
     }
 
     public function testInvoke()
     {
         $connection = $this->connection;
+
         $this->assertEquals(
             $connection->prepare('SELECT * FROM users'),
             $connection('SELECT * FROM users')

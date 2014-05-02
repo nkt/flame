@@ -15,6 +15,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testFrom()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users'));
         $this->assertSame('SELECT * FROM "users"', (string)$select);
         $this->assertSame('SELECT * FROM "users", "comments" AS "c"', (string)$select->from('comments', 'c'));
@@ -23,6 +24,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testColumnAdding()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->column('id')->column('username', 'name'));
         $this->assertSame('SELECT "id", "username" AS "name" FROM "users"', (string)$select);
     }
@@ -30,6 +32,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testMultiColumnAdding()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->columns('id', 'username'));
         $this->assertSame('SELECT "id", "username" FROM "users"', (string)$select);
     }
@@ -37,6 +40,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testDistinct()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->distinct());
         $this->assertSame('SELECT DISTINCT * FROM "users"', (string)$select);
         $this->assertSame('SELECT * FROM "users"', (string)$select->distinct(false));
@@ -45,6 +49,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testLimit()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->limit(10));
         $this->assertSame('SELECT * FROM "users" LIMIT 10', (string)$select);
 
@@ -55,6 +60,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testGroupBy()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->groupBy('username'));
         $this->assertSame('SELECT * FROM "users" GROUP BY "username"', (string)$select);
         $this->assertSame('SELECT * FROM "users" GROUP BY "username", "id"', (string)$select->groupBy('id'));
@@ -63,6 +69,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testOrderBy()
     {
         $select = $this->select();
+
         $this->assertSame($select, $select->from('users')->orderBy('username'));
         $this->assertSame('SELECT * FROM "users" ORDER BY "username" ASC', (string)$select);
         $this->assertSame('SELECT * FROM "users" ORDER BY "username" ASC, "id" DESC', (string)$select->orderBy('id', false));
@@ -72,6 +79,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     {
         $select = $this->select();
         $select->limit(10)->offset(100)->from('users')->groupBy('foo')->orderBy('bar')->column('foo');
+
         $this->assertSame('SELECT "foo" FROM "users" ORDER BY "bar" ASC GROUP BY "foo" LIMIT 100, 10', (string)$select);
     }
 
@@ -90,6 +98,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     public function testWhere()
     {
         $select = $this->select();
+
         $select->from('users')->where(['foo' => ':bar']);
         $this->assertSame('SELECT * FROM "users" WHERE "foo" = :bar', (string)$select);
     }
@@ -98,6 +107,7 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     {
         $select = $this->select();
         $select->from('users')->where($select->expr());
+
         $this->assertSame('SELECT * FROM "users"', (string)$select);
     }
 
@@ -113,9 +123,11 @@ class SelectQueryTest extends \PHPUnit_Framework_TestCase
     {
         $select = $this->select()->from('users')->union($this->select()->from('old_users'), true);
         $expected = "SELECT * FROM \"users\"\nUNION ALL\nSELECT * FROM \"old_users\"";
+
         $this->assertEquals($expected, (string)$select);
 
         $select->union($this->select()->from('new_users'));
+
         $this->assertEquals($expected . "\nUNION\nSELECT * FROM \"new_users\"", (string)$select);
     }
 }
