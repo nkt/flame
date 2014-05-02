@@ -2,6 +2,7 @@ Flame
 =====
 
 [![Build Status](https://travis-ci.org/nkt/flame.svg?branch=master)](https://travis-ci.org/nkt/flame)
+[![Coverage Status](https://coveralls.io/repos/nkt/flame/badge.png?branch=master)](https://coveralls.io/r/nkt/flame?branch=master)
 
 The PDO wrapper with comfortable API for placeholders
 
