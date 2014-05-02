@@ -71,7 +71,13 @@ class Connection extends \PDO
     public function prepare($sql, $driverOptions = [])
     {
         $this->placeholders = $this->types = [];
-        $sql = preg_replace_callback(static::PLACEHOLDER_REGEX, [$this, 'parseQuery'], $sql);
+        $sql = preg_replace_callback(static::PLACEHOLDER_REGEX, function ($matches) {
+            $name = $matches[2];
+            $this->types[$name] = static::$typeMap[$matches[1]];
+            $this->placeholders[] = $name;
+
+            return '?';
+        }, $sql);
 
         return parent::prepare($sql, $driverOptions);
     }
@@ -137,15 +143,6 @@ class Connection extends \PDO
     public function update($table, array $columns = [])
     {
         return new UpdateQuery($this->grammar, $table, $columns);
-    }
-
-    protected function parseQuery($matches)
-    {
-        $name = $matches[2];
-        $this->types[$name] = static::$typeMap[$matches[1]];
-        $this->placeholders[] = $name;
-
-        return '?';
     }
 
     /**
