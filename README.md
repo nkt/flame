@@ -59,3 +59,26 @@ Placeholder types
  - **l**: blob
  - **d**: datetime
  - **t**: time
+
+
+Usage
+-----
+
+Flame required php 5.4+ and PDO extension.
+
+`composer require nkt/flame:1.0-dev`
+
+```php
+<?php
+
+use Flame\Connection;
+use Flame\Grammar\MysqlGrammar;
+
+$db = new Connection('mysql:dbname=hello_world', 'user', 'password', [], new MysqlGrammar());
+$db->prepare(...);
+```
+
+License
+-------
+
+[MIT](LICENSE)
