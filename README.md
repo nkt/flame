@@ -22,11 +22,11 @@ SELECT * FROM users u WHERE u.registered >= d:date;
 
 Placeholder types:
 
- - `s`tring
- - `i`nteger
- - `f`loat
- - `b`oolean
- - `n`ull
- - b`l`ob
- - `d`atetime
- - `t`ime
+ - **s**: string
+ - **i**: integer
+ - **f**: float
+ - **b**: boolean
+ - **n**: null
+ - **l**: blob
+ - **d**: datetime
+ - **t**: time
