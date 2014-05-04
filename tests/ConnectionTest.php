@@ -57,11 +57,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame('SELECT * FROM users WHERE id IN(?, ?, ?, ?, ?, ?, ?, ?, ?)', $stmt->queryString);
-        $this->assertSame(
-            array('default', 'string', 'int', 'float', 'bool', 'null', 'lob', 'date', 'time'),
-            $this->getObjectAttribute($stmt, 'placeholders')
-        );
-        $this->assertAttributeSame(array(
+        $this->assertAttributeSame([
+            'default', 'string', 'int', 'float', 'bool', 'null', 'lob', 'date', 'time'
+        ], 'placeholders', $stmt);
+        $this->assertAttributeSame([
             'default' => \PDO::PARAM_STR,
             'string'  => \PDO::PARAM_STR,
             'int'     => \PDO::PARAM_INT,
@@ -71,7 +70,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'lob'     => \PDO::PARAM_LOB,
             'date'    => Connection::PARAM_DATE_TIME,
             'time'    => Connection::PARAM_TIME
-        ), 'types', $stmt);
+        ], 'types', $stmt);
+    }
+
+    public function testParserSkipRepeatedTypes()
+    {
+        $stmt = $this->connection->prepare('SELECT * FROM users WHERE sex = b:sex OR (username = "John" AND sex = :sex)');
+
+        $this->assertAttributeSame(['sex', 'sex'], 'placeholders', $stmt);
+        $this->assertAttributeSame(['sex' => \PDO::PARAM_BOOL], 'types', $stmt);
     }
 
     public function testSelect()

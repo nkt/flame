@@ -74,7 +74,9 @@ class Connection extends \PDO
         $this->placeholders = $this->types = [];
         $sql = preg_replace_callback(static::PLACEHOLDER_REGEX, function ($matches) {
             $name = $matches[2];
-            $this->types[$name] = static::$typeMap[$matches[1]];
+            if (!isset($this->types[$name])) {
+                $this->types[$name] = static::$typeMap[$matches[1]];
+            }
             $this->placeholders[] = $name;
 
             return '?';
@@ -121,7 +123,7 @@ class Connection extends \PDO
      */
     public function setDefaultFetchMode($mode)
     {
-        $this->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, $mode);
+        $this->setAttribute(self::ATTR_DEFAULT_FETCH_MODE, $mode);
 
         return $this;
     }
