@@ -52,12 +52,22 @@ class SelectQuery
      */
     protected $unions = [];
 
+    /**
+     * @param Grammar $grammar
+     * @param array   $columns
+     */
     public function __construct(Grammar $grammar, array $columns)
     {
         $this->grammar = $grammar;
         $this->columns = $columns;
     }
 
+    /**
+     * @param string $table
+     * @param string $alias
+     *
+     * @return static
+     */
     public function from($table, $alias = null)
     {
         if ($alias === null) {
@@ -69,6 +79,12 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param string $alias
+     *
+     * @return static
+     */
     public function column($name, $alias = null)
     {
         if ($alias === null) {
@@ -80,7 +96,12 @@ class SelectQuery
         return $this;
     }
 
-    public function columns()
+    /**
+     * @param string $column,...
+     *
+     * @return static
+     */
+    public function columns($column)
     {
         foreach (func_get_args() as $column) {
             $this->columns[] = $this->grammar->buildId($column);
@@ -89,6 +110,11 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param bool $distinct
+     *
+     * @return static
+     */
     public function distinct($distinct = true)
     {
         $this->distinct = (bool)$distinct;
@@ -96,6 +122,11 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param string $column
+     *
+     * @return static
+     */
     public function groupBy($column)
     {
         $this->groups[] = $this->grammar->buildId($column);
@@ -103,6 +134,12 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param string $column
+     * @param bool   $asc
+     *
+     * @return static
+     */
     public function orderBy($column, $asc = true)
     {
         if ($asc) {
@@ -114,6 +151,11 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param string|int $max
+     *
+     * @return static
+     */
     public function limit($max)
     {
         $this->limit = $max;
@@ -121,6 +163,11 @@ class SelectQuery
         return $this;
     }
 
+    /**
+     * @param string|int $offset
+     *
+     * @return static
+     */
     public function offset($offset)
     {
         $this->offset = $offset;

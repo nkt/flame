@@ -8,6 +8,9 @@ namespace Flame\QueryBuilder;
  */
 class InsertQuery extends SaveQuery
 {
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'INSERT INTO ' . $this->grammar->buildId($this->table)

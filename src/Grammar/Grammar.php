@@ -12,6 +12,11 @@ class Grammar
     const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
     const TIME_FORMAT = 'H:i:s';
 
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
     public function buildId($id)
     {
         $parts = explode(' ', $id, 2);
@@ -22,6 +27,12 @@ class Grammar
         return $this->wrap($id);
     }
 
+    /**
+     * @param string $id
+     * @param string $alias
+     *
+     * @return string
+     */
     public function buildIdWithAlias($id, $alias)
     {
         return $this->wrap($id) . ' AS ' . $this->wrap($alias);
@@ -73,12 +84,15 @@ class Grammar
         throw new \InvalidArgumentException('Time value should be int, string or \DateTime');
     }
 
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
     protected function wrap($id)
     {
-        $parts = explode('.', $id, 3);
-
         return join('.', array_map(function ($id) {
             return static::QUOTE_CHAR . $id . static::QUOTE_CHAR;
-        }, $parts));
+        }, explode('.', $id, 3)));
     }
 } 
