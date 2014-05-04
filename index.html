@@ -38,10 +38,7 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>
-<a name="flame" class="anchor" href="#flame"><span class="octicon octicon-link"></span></a>Flame</h1>
-
-<p><a href="https://travis-ci.org/nkt/flame"><img src="https://travis-ci.org/nkt/flame.svg?branch=master" alt="Build Status"></a>
+        <p><a href="https://travis-ci.org/nkt/flame"><img src="https://travis-ci.org/nkt/flame.svg?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/nkt/flame?branch=master"><img src="https://coveralls.io/repos/nkt/flame/badge.png?branch=master" alt="Coverage Status"></a></p>
 
 <p>The PDO wrapper with comfortable API for placeholders</p>
@@ -59,7 +56,33 @@
 <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="n">u</span> <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">registered</span> <span class="o">&gt;=</span> <span class="n">d</span><span class="p">:</span><span class="nb">date</span><span class="p">;</span>
 </pre></div>
 
-<p>Placeholder types:</p>
+<h2>
+<a name="difference-between-native-pdo-placeholders" class="anchor" href="#difference-between-native-pdo-placeholders"><span class="octicon octicon-link"></span></a>Difference between native PDO placeholders</h2>
+
+<p>Unlike PDO you can re-use the same placeholder as long as necessary.
+Also you have to specifying the type of the placeholder just once.</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'SELECT * FROM users WHERE age &gt;= i:age OR (registered &lt; d:registered AND age = :age)'</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'age'</span> <span class="o">=&gt;</span> <span class="nv">$age</span><span class="p">]);</span>
+</pre></div>
+
+<p>You don't need cast every integer values, Flame do it for you.</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'SELECT * FROM users WHERE id = i:id)'</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]]);</span>
+</pre></div>
+
+<p>Every query execution Flame tests value is <code>null</code> and if it is,
+change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'INSERT INTO users VALUES(s:username, d:last_login))'</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'John Doe'</span><span class="p">,</span> <span class="s1">'last_login'</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">]);</span>
+</pre></div>
+
+<p>Flame add new types: date and time. You can bind this data as <code>DateTime</code>, <code>string</code> or <code>int</code>.</p>
+
+<h2>
+<a name="placeholder-types" class="anchor" href="#placeholder-types"><span class="octicon octicon-link"></span></a>Placeholder types</h2>
 
 <ul>
 <li>
