@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Flame by nkt</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/nkt/flame">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/nkt/flame/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/nkt/flame/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Flame</h1>
+          <p>The PDO wrapper with comfortable API for placeholders</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/nkt">nkt</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="flame" class="anchor" href="#flame"><span class="octicon octicon-link"></span></a>Flame</h1>
+
+<p><a href="https://travis-ci.org/nkt/flame"><img src="https://travis-ci.org/nkt/flame.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/nkt/flame?branch=master"><img src="https://coveralls.io/repos/nkt/flame/badge.png?branch=master" alt="Coverage Status"></a></p>
+
+<p>The PDO wrapper with comfortable API for placeholders</p>
+
+<h2>
+<a name="idea" class="anchor" href="#idea"><span class="octicon octicon-link"></span></a>Idea</h2>
+
+<p>Write placeholders types directly in the query</p>
+
+<p>For example:</p>
+
+<div class="highlight highlight-sql"><pre><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">goods</span> <span class="k">g</span> <span class="k">WHERE</span> <span class="k">g</span><span class="p">.</span><span class="n">price</span> <span class="k">BETWEEN</span> <span class="n">f</span><span class="p">:</span><span class="n">minPrice</span> <span class="k">AND</span> <span class="n">f</span><span class="p">:</span><span class="n">maxPrice</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="n">u</span> <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">username</span><span class="p">;</span> <span class="c1">-- :username also bind as string</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">orders</span> <span class="n">o</span> <span class="k">WHERE</span> <span class="n">o</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">i</span><span class="p">:</span><span class="n">id</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="n">u</span> <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">registered</span> <span class="o">&gt;=</span> <span class="n">d</span><span class="p">:</span><span class="nb">date</span><span class="p">;</span>
+</pre></div>
+
+<p>Placeholder types:</p>
+
+<ul>
+<li>
+<strong>s</strong>: string</li>
+<li>
+<strong>i</strong>: integer</li>
+<li>
+<strong>f</strong>: float</li>
+<li>
+<strong>b</strong>: boolean</li>
+<li>
+<strong>n</strong>: null</li>
+<li>
+<strong>l</strong>: blob</li>
+<li>
+<strong>d</strong>: datetime</li>
+<li>
+<strong>t</strong>: time</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37169681-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
