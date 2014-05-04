@@ -101,7 +101,26 @@ change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
 <strong>d</strong>: datetime</li>
 <li>
 <strong>t</strong>: time</li>
-</ul>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Flame required php 5.4+ and PDO extension.</p>
+
+<p><code>composer require nkt/flame:1.0-dev</code></p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+<span class="k">use</span> <span class="nx">Flame\Connection</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Flame\Grammar\MysqlGrammar</span><span class="p">;</span>
+
+<span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Connection</span><span class="p">(</span><span class="s1">'mysql:dbname=hello_world'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">,</span> <span class="p">[],</span> <span class="k">new</span> <span class="nx">MysqlGrammar</span><span class="p">());</span>
+<span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="o">...</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p><a href="LICENSE">MIT</a></p>
       </section>
 
     </div>
