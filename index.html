@@ -62,8 +62,9 @@
 <p>Unlike PDO you can re-use the same placeholder as long as necessary.
 Also you have to specifying the type of the placeholder just once.</p>
 
-<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'SELECT * FROM users WHERE age &gt;= i:age OR (registered &lt; d:registered AND age = :age)'</span><span class="p">);</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'age'</span> <span class="o">=&gt;</span> <span class="nv">$age</span><span class="p">]);</span>
+<div class="highlight highlight-php"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span>
+    <span class="s1">'SELECT * FROM users WHERE age &gt;= i:age OR (registered &lt; d:registered AND age = :age)'</span>
+<span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'age'</span> <span class="o">=&gt;</span> <span class="nv">$age</span><span class="p">]);</span>
 </pre></div>
 
 <p>You don't need cast every integer values, Flame do it for you.</p>
@@ -101,7 +102,41 @@ change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
 <strong>d</strong>: datetime</li>
 <li>
 <strong>t</strong>: time</li>
-</ul><h2>
+</ul><h1>
+<a name="query-builder" class="anchor" href="#query-builder"><span class="octicon octicon-link"></span></a>Query builder</h1>
+
+<p>Flame also provide powerful query builder. Connection provide base wrappers:</p>
+
+<ul>
+<li><code>Connection::select(string $column...)</code></li>
+<li><code>Connection::update(string $table, array $columns)</code></li>
+<li><code>Connection::insert(string $table, array $columns)</code></li>
+</ul><p>Every sql statement provides by method with same name in <code>camelCase</code>.</p>
+
+<p>Examples:</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$posts</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span>
+    <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'p.id'</span><span class="p">,</span> <span class="s1">'p.title'</span><span class="p">,</span> <span class="s1">'p.content'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">from</span><span class="p">(</span><span class="s1">'posts p'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">'post_tags pt'</span><span class="p">,</span> <span class="s1">'p.id'</span><span class="p">,</span> <span class="s1">'pt.post_id'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">'tags t'</span><span class="p">,</span> <span class="s1">'t.id'</span><span class="p">,</span> <span class="s1">'pt.tag_id'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+           <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">equal</span><span class="p">(</span><span class="s1">'t.name'</span><span class="p">,</span> <span class="s1">':tag'</span><span class="p">);</span>
+       <span class="p">})</span>
+<span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'tag'</span> <span class="o">=&gt;</span> <span class="nv">$tag</span><span class="p">]);</span>
+
+<span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="nv">$db</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">'username'</span>   <span class="o">=&gt;</span> <span class="s1">':name'</span><span class="p">,</span>
+        <span class="s1">'password'</span>   <span class="o">=&gt;</span> <span class="s1">':pass'</span><span class="p">,</span>
+        <span class="s1">'registered'</span> <span class="o">=&gt;</span> <span class="s1">'d:now'</span>
+    <span class="p">]))</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
+        <span class="s1">'pass'</span> <span class="o">=&gt;</span> <span class="nv">$pass</span><span class="p">,</span>
+        <span class="s1">'now'</span>  <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">\DateTime</span><span class="p">()</span>
+   <span class="p">]);</span>
+</pre></div>
+
+<h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>Flame required php 5.4+ and PDO extension.</p>
