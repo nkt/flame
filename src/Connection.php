@@ -86,8 +86,18 @@ class Connection extends \PDO
     }
 
     /**
+     * @param string $sql
+     * @param array  $parameters
+     *
+     * @return Query
+     */
+    public function query($sql, array $parameters = [])
+    {
+        return $this->prepare($sql)->execute($parameters);
+    }
+
+    /**
      * @return static
-     * @throws Exception
      */
     public function beginTransaction()
     {

@@ -81,6 +81,19 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame(['sex' => \PDO::PARAM_BOOL], 'types', $stmt);
     }
 
+    public function testQuery()
+    {
+        $stmt = $this->connection->query('SELECT * FROM users');
+
+        $this->assertInstanceOf('Flame\\Query', $stmt);
+        $this->assertSame(3, $stmt->columnCount());
+
+        $stmt = $this->connection->query('SELECT * FROM users WHERE id = i:id', ['id' => 1]);
+
+        $this->assertAttributeSame(['id'], 'placeholders', $stmt);
+        $this->assertAttributeSame(['id' => \PDO::PARAM_INT], 'types', $stmt);
+    }
+
     public function testSelect()
     {
         $select = $this->connection->select('id', 'name', 'count');
