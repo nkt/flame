@@ -27,8 +27,9 @@ Unlike PDO you can re-use the same placeholder as long as necessary.
 Also you have to specifying the type of the placeholder just once.
 
 ```php
-$stmt = $flame->prepare('SELECT * FROM users WHERE age >= i:age OR (registered < d:registered AND age = :age)');
-$users = $stmt->execute(['age' => $age]);
+$users = $flame->prepare(
+    'SELECT * FROM users WHERE age >= i:age OR (registered < d:registered AND age = :age)'
+)->execute(['age' => $age]);
 ```
 
 You don't need cast every integer values, Flame do it for you.
@@ -60,6 +61,41 @@ Placeholder types
  - **d**: datetime
  - **t**: time
 
+
+Query builder
+=============
+
+Flame also provide powerful query builder. Connection provide base wrappers:
+
+ - `Connection::select(string $column...)`
+ - `Connection::update(string $table, array $columns)`
+ - `Connection::insert(string $table, array $columns)`
+
+Every sql statement provides by method with same name in `camelCase`.
+
+Examples:
+
+```php
+$posts = $db->prepare(
+    $db->select('p.id', 'p.title', 'p.content')
+       ->from('posts p')
+       ->join('post_tags pt', 'p.id', 'pt.post_id')
+       ->join('tags t', 't.id', 'pt.tag_id')
+       ->where(function ($e) {
+           $e->equal('t.name', ':tag');
+       })
+)->execute(['tag' => $tag]);
+
+$db->prepare($db->insert('users', [
+        'username'   => ':name',
+        'password'   => ':pass',
+        'registered' => 'd:now'
+    ]))->execute([
+        'name' => $name,
+        'pass' => $pass,
+        'now'  => new \DateTime()
+   ]);
+```
 
 Usage
 -----

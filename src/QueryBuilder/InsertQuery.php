@@ -17,4 +17,4 @@ class InsertQuery extends SaveQuery
         . '(' . join(', ', array_keys($this->columns)) . ') VALUES('
         . join(', ', array_values($this->columns)) . ')';
     }
-} 
+}
