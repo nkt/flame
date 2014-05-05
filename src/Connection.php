@@ -97,6 +97,16 @@ class Connection extends \PDO
     }
 
     /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function quoteId($id)
+    {
+        return $this->grammar->buildId($id);
+    }
+
+    /**
      * @return static
      */
     public function beginTransaction()

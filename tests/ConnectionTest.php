@@ -94,6 +94,11 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame(['id' => \PDO::PARAM_INT], 'types', $stmt);
     }
 
+    public function testQuoteId()
+    {
+        $this->assertSame('"id"', $this->connection->quoteId('id'));
+    }
+
     public function testSelect()
     {
         $select = $this->connection->select('id', 'name', 'count');
