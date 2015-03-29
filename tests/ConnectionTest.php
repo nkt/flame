@@ -53,12 +53,12 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     public function testParser()
     {
         $stmt = $this->connection->prepare(
-            'SELECT * FROM users WHERE id IN(:default, s:string, i:int, f:float, b:bool, n:null, l:lob, d:date, t:time)'
+            'SELECT * FROM users WHERE id IN(:default, s:string, i:int, f:float, b:bool, l:lob, d:date, t:time)'
         );
 
-        $this->assertSame('SELECT * FROM users WHERE id IN(?, ?, ?, ?, ?, ?, ?, ?, ?)', $stmt->queryString);
+        $this->assertSame('SELECT * FROM users WHERE id IN(?, ?, ?, ?, ?, ?, ?, ?)', $stmt->queryString);
         $this->assertAttributeSame([
-            'default', 'string', 'int', 'float', 'bool', 'null', 'lob', 'date', 'time'
+            'default', 'string', 'int', 'float', 'bool', 'lob', 'date', 'time'
         ], 'placeholders', $stmt);
         $this->assertAttributeSame([
             'default' => \PDO::PARAM_STR,
@@ -66,7 +66,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'int'     => \PDO::PARAM_INT,
             'float'   => \PDO::PARAM_STR,
             'bool'    => \PDO::PARAM_BOOL,
-            'null'    => \PDO::PARAM_NULL,
             'lob'     => \PDO::PARAM_LOB,
             'date'    => Connection::PARAM_DATE_TIME,
             'time'    => Connection::PARAM_TIME

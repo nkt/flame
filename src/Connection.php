@@ -13,7 +13,7 @@ use Flame\QueryBuilder\UpdateQuery;
  */
 class Connection extends \PDO
 {
-    const PLACEHOLDER_REGEX = '~([sbnilfdt]{0,1}):(\w+)~';
+    const PLACEHOLDER_REGEX = '~([sbilfdt]{0,1}):(\w+)~';
     const PARAM_DATE_TIME = -1;
     const PARAM_TIME = -2;
     protected static $typeMap = [
@@ -22,7 +22,6 @@ class Connection extends \PDO
         'i' => self::PARAM_INT,
         'f' => self::PARAM_STR,
         'b' => self::PARAM_BOOL,
-        'n' => self::PARAM_NULL,
         'l' => self::PARAM_LOB,
         'd' => self::PARAM_DATE_TIME,
         't' => self::PARAM_TIME

@@ -56,7 +56,6 @@ Placeholder types
  - **i**: integer
  - **f**: float
  - **b**: boolean
- - **n**: null
  - **l**: blob
  - **d**: datetime
  - **t**: time
