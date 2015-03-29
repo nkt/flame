@@ -6,6 +6,28 @@ Flame
 
 The PDO wrapper with comfortable API for placeholders
 
+Installation
+------------
+
+Flame requires php 5.4+ and PDO extension.
+
+```
+composer require nkt/flame:~1.0
+```
+
+Usage
+-----
+
+```php
+<?php
+
+use Flame\Connection;
+use Flame\Grammar\MysqlGrammar;
+
+$db = new Connection('mysql:dbname=hello_world', 'user', 'password', [], new MysqlGrammar());
+$db->prepare(...);
+```
+
 Idea
 ----
 
@@ -94,23 +116,6 @@ $db->prepare($db->insert('users', [
         'pass' => $pass,
         'now'  => new \DateTime()
    ]);
-```
-
-Usage
------
-
-Flame required php 5.4+ and PDO extension.
-
-`composer require nkt/flame:1.0-dev`
-
-```php
-<?php
-
-use Flame\Connection;
-use Flame\Grammar\MysqlGrammar;
-
-$db = new Connection('mysql:dbname=hello_world', 'user', 'password', [], new MysqlGrammar());
-$db->prepare(...);
 ```
 
 License
