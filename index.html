@@ -4,42 +4,34 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Flame by nkt</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/nkt/flame">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/nkt/flame/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/nkt/flame/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
     <div class="wrapper">
+      <header>
+        <h1 class="header">Flame</h1>
+        <p class="header">The PDO wrapper with comfortable API for placeholders</p>
 
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/nkt/flame/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/nkt/flame/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/nkt/flame">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/nkt">nkt</a></p>
+
+
+      </header>
       <section>
-        <div id="title">
-          <h1>Flame</h1>
-          <p>The PDO wrapper with comfortable API for placeholders</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/nkt">nkt</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
-
         <h1>
-<a name="flame" class="anchor" href="#flame"><span class="octicon octicon-link"></span></a>Flame</h1>
+<a id="flame" class="anchor" href="#flame" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flame</h1>
 
 <p><a href="https://travis-ci.org/nkt/flame"><img src="https://travis-ci.org/nkt/flame.svg?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/nkt/flame?branch=master"><img src="https://img.shields.io/coveralls/nkt/flame.svg" alt="Coverage Status"></a></p>
@@ -47,46 +39,61 @@
 <p>The PDO wrapper with comfortable API for placeholders</p>
 
 <h2>
-<a name="idea" class="anchor" href="#idea"><span class="octicon octicon-link"></span></a>Idea</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Flame requires php 5.4+ and PDO extension.</p>
+
+<pre><code>composer require nkt/flame:~1.0
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Flame\Connection</span>;</span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Flame\Grammar\MysqlGrammar</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$db</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Connection</span>(<span class="pl-s"><span class="pl-pds">'</span>mysql:dbname=hello_world<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>user<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>, [], <span class="pl-k">new</span> <span class="pl-c1">MysqlGrammar</span>());</span>
+<span class="pl-s1"><span class="pl-smi">$db</span><span class="pl-k">-&gt;</span>prepare(<span class="pl-k">...</span>);</span></pre></div>
+
+<h2>
+<a id="idea" class="anchor" href="#idea" aria-hidden="true"><span class="octicon octicon-link"></span></a>Idea</h2>
 
 <p>Write placeholders types directly in the query</p>
 
 <p>For example:</p>
 
-<div class="highlight highlight-sql"><pre><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">goods</span> <span class="k">g</span> <span class="k">WHERE</span> <span class="k">g</span><span class="p">.</span><span class="n">price</span> <span class="k">BETWEEN</span> <span class="n">f</span><span class="p">:</span><span class="n">minPrice</span> <span class="k">AND</span> <span class="n">f</span><span class="p">:</span><span class="n">maxPrice</span><span class="p">;</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="n">u</span> <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">username</span><span class="p">;</span> <span class="c1">-- :username also bind as string</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">orders</span> <span class="n">o</span> <span class="k">WHERE</span> <span class="n">o</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">i</span><span class="p">:</span><span class="n">id</span><span class="p">;</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="n">u</span> <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">registered</span> <span class="o">&gt;=</span> <span class="n">d</span><span class="p">:</span><span class="nb">date</span><span class="p">;</span>
-</pre></div>
+<div class="highlight highlight-sql"><pre><span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> goods g <span class="pl-k">WHERE</span> <span class="pl-c1">g</span>.<span class="pl-c1">price</span> BETWEEN f:minPrice <span class="pl-k">AND</span> f:maxPrice;
+<span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> users u <span class="pl-k">WHERE</span> <span class="pl-c1">u</span>.<span class="pl-c1">username</span> <span class="pl-k">=</span> s:username; <span class="pl-c">-- :username also bind as string</span>
+<span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> orders o <span class="pl-k">WHERE</span> <span class="pl-c1">o</span>.<span class="pl-c1">id</span> <span class="pl-k">=</span> i:id;
+<span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> users u <span class="pl-k">WHERE</span> <span class="pl-c1">u</span>.<span class="pl-c1">registered</span> <span class="pl-k">&gt;=</span> d:<span class="pl-k">date</span>;</pre></div>
 
 <h2>
-<a name="difference-between-native-pdo-placeholders" class="anchor" href="#difference-between-native-pdo-placeholders"><span class="octicon octicon-link"></span></a>Difference between native PDO placeholders</h2>
+<a id="difference-between-native-pdo-placeholders" class="anchor" href="#difference-between-native-pdo-placeholders" aria-hidden="true"><span class="octicon octicon-link"></span></a>Difference between native PDO placeholders</h2>
 
 <p>Unlike PDO you can re-use the same placeholder as long as necessary.
 Also you have to specifying the type of the placeholder just once.</p>
 
-<div class="highlight highlight-php"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span>
-    <span class="s1">'SELECT * FROM users WHERE age &gt;= i:age OR (registered &lt; d:registered AND age = :age)'</span>
-<span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'age'</span> <span class="o">=&gt;</span> <span class="nv">$age</span><span class="p">]);</span>
-</pre></div>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$users</span> <span class="pl-k">=</span> <span class="pl-smi">$flame</span><span class="pl-k">-&gt;</span>prepare(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-s1"><span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> users <span class="pl-k">WHERE</span> age <span class="pl-k">&gt;=</span> i:age <span class="pl-k">OR</span> (registered <span class="pl-k">&lt;</span> d:registered <span class="pl-k">AND</span> age <span class="pl-k">=</span> :age)</span><span class="pl-pds">'</span></span></span>
+<span class="pl-s1">)<span class="pl-k">-&gt;</span>execute([<span class="pl-s"><span class="pl-pds">'</span>age<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$age</span>]);</span></pre></div>
 
 <p>You don't need cast every integer values, Flame do it for you.</p>
 
-<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'SELECT * FROM users WHERE id = i:id)'</span><span class="p">);</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]]);</span>
-</pre></div>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$stmt</span> <span class="pl-k">=</span> <span class="pl-smi">$flame</span><span class="pl-k">-&gt;</span>prepare(<span class="pl-s"><span class="pl-pds">'</span><span class="pl-s1"><span class="pl-k">SELECT</span> <span class="pl-k">*</span> <span class="pl-k">FROM</span> users <span class="pl-k">WHERE</span> id <span class="pl-k">=</span> i:id)</span><span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$users</span> <span class="pl-k">=</span> <span class="pl-smi">$stmt</span><span class="pl-k">-&gt;</span>execute([<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$_POST</span>[<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span>]]);</span></pre></div>
 
 <p>Every query execution Flame tests value is <code>null</code> and if it is,
 change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
 
-<div class="highlight highlight-php"><pre><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$flame</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s1">'INSERT INTO users VALUES(s:username, d:last_login))'</span><span class="p">);</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'John Doe'</span><span class="p">,</span> <span class="s1">'last_login'</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">]);</span>
-</pre></div>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$stmt</span> <span class="pl-k">=</span> <span class="pl-smi">$flame</span><span class="pl-k">-&gt;</span>prepare(<span class="pl-s"><span class="pl-pds">'</span><span class="pl-s1"><span class="pl-k">INSERT INTO</span> users <span class="pl-k">VALUES</span>(s:username, d:last_login))</span><span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$users</span> <span class="pl-k">=</span> <span class="pl-smi">$stmt</span><span class="pl-k">-&gt;</span>execute([<span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>John Doe<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>last_login<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>]);</span></pre></div>
 
 <p>Flame add new types: date and time. You can bind this data as <code>DateTime</code>, <code>string</code> or <code>int</code>.</p>
 
 <h2>
-<a name="placeholder-types" class="anchor" href="#placeholder-types"><span class="octicon octicon-link"></span></a>Placeholder types</h2>
+<a id="placeholder-types" class="anchor" href="#placeholder-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Placeholder types</h2>
 
 <ul>
 <li>
@@ -98,15 +105,15 @@ change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
 <li>
 <strong>b</strong>: boolean</li>
 <li>
-<strong>n</strong>: null</li>
-<li>
 <strong>l</strong>: blob</li>
 <li>
 <strong>d</strong>: datetime</li>
 <li>
 <strong>t</strong>: time</li>
-</ul><h1>
-<a name="query-builder" class="anchor" href="#query-builder"><span class="octicon octicon-link"></span></a>Query builder</h1>
+</ul>
+
+<h1>
+<a id="query-builder" class="anchor" href="#query-builder" aria-hidden="true"><span class="octicon octicon-link"></span></a>Query builder</h1>
 
 <p>Flame also provide powerful query builder. Connection provide base wrappers:</p>
 
@@ -114,56 +121,43 @@ change placeholder type to <code>PDO::PARAM_NULL</code>.</p>
 <li><code>Connection::select(string $column...)</code></li>
 <li><code>Connection::update(string $table, array $columns)</code></li>
 <li><code>Connection::insert(string $table, array $columns)</code></li>
-</ul><p>Every sql statement provides by method with same name in <code>camelCase</code>.</p>
+</ul>
+
+<p>Every sql statement provides by method with same name in <code>camelCase</code>.</p>
 
 <p>Examples:</p>
 
-<div class="highlight highlight-php"><pre><span class="nv">$posts</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span>
-    <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'p.id'</span><span class="p">,</span> <span class="s1">'p.title'</span><span class="p">,</span> <span class="s1">'p.content'</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">from</span><span class="p">(</span><span class="s1">'posts p'</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">'post_tags pt'</span><span class="p">,</span> <span class="s1">'p.id'</span><span class="p">,</span> <span class="s1">'pt.post_id'</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">'tags t'</span><span class="p">,</span> <span class="s1">'t.id'</span><span class="p">,</span> <span class="s1">'pt.tag_id'</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
-           <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">equal</span><span class="p">(</span><span class="s1">'t.name'</span><span class="p">,</span> <span class="s1">':tag'</span><span class="p">);</span>
-       <span class="p">})</span>
-<span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">'tag'</span> <span class="o">=&gt;</span> <span class="nv">$tag</span><span class="p">]);</span>
-
-<span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="nv">$db</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="p">[</span>
-        <span class="s1">'username'</span>   <span class="o">=&gt;</span> <span class="s1">':name'</span><span class="p">,</span>
-        <span class="s1">'password'</span>   <span class="o">=&gt;</span> <span class="s1">':pass'</span><span class="p">,</span>
-        <span class="s1">'registered'</span> <span class="o">=&gt;</span> <span class="s1">'d:now'</span>
-    <span class="p">]))</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span>
-        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
-        <span class="s1">'pass'</span> <span class="o">=&gt;</span> <span class="nv">$pass</span><span class="p">,</span>
-        <span class="s1">'now'</span>  <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">\DateTime</span><span class="p">()</span>
-   <span class="p">]);</span>
-</pre></div>
-
-<h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>Flame required php 5.4+ and PDO extension.</p>
-
-<p><code>composer require nkt/flame:1.0-dev</code></p>
-
-<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-
-<span class="k">use</span> <span class="nx">Flame\Connection</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Flame\Grammar\MysqlGrammar</span><span class="p">;</span>
-
-<span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Connection</span><span class="p">(</span><span class="s1">'mysql:dbname=hello_world'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">,</span> <span class="p">[],</span> <span class="k">new</span> <span class="nx">MysqlGrammar</span><span class="p">());</span>
-<span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="o">...</span><span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$posts</span> <span class="pl-k">=</span> <span class="pl-smi">$db</span><span class="pl-k">-&gt;</span>prepare(</span>
+<span class="pl-s1">    <span class="pl-smi">$db</span><span class="pl-k">-&gt;</span>select(<span class="pl-s"><span class="pl-pds">'</span>p.id<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>p.title<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>p.content<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">       <span class="pl-k">-&gt;</span>from(<span class="pl-s"><span class="pl-pds">'</span>posts p<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">       <span class="pl-k">-&gt;</span>join(<span class="pl-s"><span class="pl-pds">'</span>post_tags pt<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>p.id<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>pt.post_id<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">       <span class="pl-k">-&gt;</span>join(<span class="pl-s"><span class="pl-pds">'</span>tags t<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>t.id<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>pt.tag_id<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">       <span class="pl-k">-&gt;</span>where(<span class="pl-k">function</span> (<span class="pl-smi">$e</span>) {</span>
+<span class="pl-s1">           <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>equal(<span class="pl-s"><span class="pl-pds">'</span>t.name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>:tag<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">       })</span>
+<span class="pl-s1">)<span class="pl-k">-&gt;</span>execute([<span class="pl-s"><span class="pl-pds">'</span>tag<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$tag</span>]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$db</span><span class="pl-k">-&gt;</span>prepare(<span class="pl-smi">$db</span><span class="pl-k">-&gt;</span>insert(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>:name<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>:pass<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>registered<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>d:now<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ]))<span class="pl-k">-&gt;</span>execute([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$name</span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>pass<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$pass</span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>now<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-k">new</span> <span class="pl-c1">\DateTime</span>()</span>
+<span class="pl-s1">   ]);</span></pre></div>
 
 <h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p><a href="LICENSE">MIT</a></p>
       </section>
-
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
+		          <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
