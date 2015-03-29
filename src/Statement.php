@@ -5,10 +5,9 @@ namespace Flame;
 use Flame\Grammar\Grammar;
 
 /**
- * Query
  * @author Gusakov Nikita <dev@nkt.me>
  */
-class Query extends \PDOStatement
+class Statement extends \PDOStatement
 {
     /**
      * @var array

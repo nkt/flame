@@ -8,7 +8,6 @@ use Flame\QueryBuilder\SelectQuery;
 use Flame\QueryBuilder\UpdateQuery;
 
 /**
- * Connection
  * @author Gusakov Nikita <dev@nkt.me>
  */
 class Connection extends \PDO
@@ -52,7 +51,7 @@ class Connection extends \PDO
         parent::__construct($dsn, $username, $password, array_replace($attributes, [
             self::ATTR_ERRMODE            => self::ERRMODE_EXCEPTION,
             self::ATTR_DEFAULT_FETCH_MODE => self::FETCH_ASSOC,
-            self::ATTR_STATEMENT_CLASS    => ['Flame\\Query', [&$this->grammar, &$this->placeholders, &$this->types]],
+            self::ATTR_STATEMENT_CLASS    => ['Flame\\Statement', [&$this->grammar, &$this->placeholders, &$this->types]],
         ]));
 
         if ($grammar === null) {

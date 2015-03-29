@@ -4,7 +4,7 @@ namespace Flame\Test;
 
 use Flame\Connection;
 use Flame\Grammar\Grammar;
-use Flame\Query;
+use Flame\Statement;
 
 class StatementTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,14 +14,14 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     private $connection;
 
     /**
-     * @var Query
+     * @var Statement
      */
-    private $insertQuery;
+    private $insertStatement;
 
     /**
-     * @var Query
+     * @var Statement
      */
-    private $selectQuery;
+    private $selectStatement;
 
     protected function setUp()
     {
@@ -29,21 +29,21 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->connection->query(
             'CREATE TABLE users (id INT PRIMARY KEY, username CHAR(50), age INT, registered DATE, spend_time TIME)'
         );
-        $this->insertQuery = $this->connection->prepare(
+        $this->insertStatement = $this->connection->prepare(
             'INSERT INTO users (username, age, registered, spend_time) VALUES(s:username, i:age, d:date, t:time)'
         );
-        $this->selectQuery = $this->connection->prepare('SELECT * FROM users');
+        $this->selectStatement = $this->connection->prepare('SELECT * FROM users');
     }
 
     public function testValueConverters()
     {
-        $this->insertQuery->execute(['username' => null, 'age' => '20foobar']);
+        $this->insertStatement->execute(['username' => null, 'age' => '20foobar']);
         $user = $this->connection->query('SELECT username, age FROM users ORDER BY id DESC')->fetch(\PDO::FETCH_ASSOC);
 
         $this->assertEquals(['username' => null, 'age' => '20'], $user);
 
         $date = new \DateTime();
-        $this->insertQuery->execute(['username' => 'foo', 'date' => $date, 'time' => $date]);
+        $this->insertStatement->execute(['username' => 'foo', 'date' => $date, 'time' => $date]);
         $user = $this->connection->query('SELECT registered, spend_time FROM users WHERE username = "foo"')->fetch(\PDO::FETCH_ASSOC);
 
         $this->assertEquals([
@@ -54,9 +54,9 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchCallback()
     {
-        $this->insertQuery->execute(['username' => 'nkt', 'age' => 20]);
+        $this->insertStatement->execute(['username' => 'nkt', 'age' => 20]);
         $i = 0;
-        $results = $this->selectQuery->execute()->fetchCallback(function ($data) use (&$i) {
+        $results = $this->selectStatement->execute()->fetchCallback(function ($data) use (&$i) {
             $i++;
 
             return $data['id'];
@@ -67,20 +67,20 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testCloseCursor()
     {
-        iterator_to_array($this->selectQuery->execute());
+        iterator_to_array($this->selectStatement->execute());
 
-        $this->assertEquals($this->selectQuery, $this->selectQuery->closeCursor());
+        $this->assertEquals($this->selectStatement, $this->selectStatement->closeCursor());
     }
 
     public function testInvoke()
     {
-        $stmt = $this->selectQuery;
+        $stmt = $this->selectStatement;
 
-        $this->assertSame($this->selectQuery, $stmt());
+        $this->assertSame($this->selectStatement, $stmt());
     }
 
     public function testToString()
     {
-        $this->assertEquals($this->insertQuery->queryString, (string)$this->insertQuery);
+        $this->assertEquals($this->insertStatement->queryString, (string)$this->insertStatement);
     }
 }
