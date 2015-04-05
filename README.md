@@ -74,13 +74,15 @@ Flame add new types: date and time. You can bind this data as `DateTime`, `strin
 Placeholder types
 -----------------
 
- - **s**: string
- - **i**: integer
- - **f**: float
- - **b**: boolean
- - **l**: blob
- - **d**: datetime
- - **t**: time
+Placeholder | Type
+:---------: | :-----:
+ **s**      | string
+ **i**      | integer
+ **f**      | float
+ **b**      | boolean
+ **l**      | blob
+ **d**      | datetime
+ **t**      | time
 
 
 Query builder
