@@ -15,6 +15,7 @@ class Connection extends \PDO
     const PLACEHOLDER_REGEX = '~([sbilfdt]{0,1}):(\w+)~';
     const PARAM_DATE_TIME = -1;
     const PARAM_TIME = -2;
+    
     protected static $typeMap = [
         ''  => self::PARAM_STR, // string by default
         's' => self::PARAM_STR,
@@ -30,10 +31,12 @@ class Connection extends \PDO
      * @var array
      */
     private $placeholders;
+    
     /**
      * @var array
      */
     private $types;
+    
     /**
      * @var Grammar
      */
@@ -65,7 +68,7 @@ class Connection extends \PDO
      * @param string $sql
      * @param array  $driverOptions
      *
-     * @return Query
+     * @return Statement
      */
     public function prepare($sql, $driverOptions = [])
     {
@@ -87,7 +90,7 @@ class Connection extends \PDO
      * @param string $sql
      * @param array  $parameters
      *
-     * @return Query
+     * @return Statement
      */
     public function query($sql, array $parameters = [])
     {
